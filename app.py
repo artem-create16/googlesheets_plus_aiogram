@@ -2,13 +2,14 @@ from loader import db
 
 
 async def on_startup(dp):
+    # db.delete_all_users()
     try:
         db.create_table()
+        print(db.select_all_users())
     except Exception as err:
-        print(err)
-
-    print(db.select_all_users())
-
+        pass
+        # print(err, 'sssssssss')
+        # print(db.select_all_users())
 
 if __name__ == '__main__':
     from aiogram import executor

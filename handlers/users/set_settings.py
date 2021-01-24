@@ -4,6 +4,7 @@ from aiogram.dispatcher.filters import Command
 from loader import dp
 from aiogram import types
 from states.questions_settings import Form
+from loader import db
 
 
 @dp.message_handler(Command('settings'))
@@ -26,13 +27,17 @@ async def answer_count_of_words(message: types.Message,
 @dp.message_handler(state=Form.time_for_send)
 async def answer_time_for_send(message: types.Message,
                                state: FSMContext):
-    time = message.text
-    await state.update_data(time=time)
+
+    await state.update_data(time=message.text)
     data = await state.get_data()
     count = data.get("count")
-    await message.answer(f'Your answers: '
-                         f'count - {count}, time - {time}')
+    db.update_settings(start_point=1, count_of_words=count, end_point=count,
+                       user_id=message.from_user.id)
 
+
+    await message.answer(f'Your answers: '
+                         f'count - {count}, time - {message.text}')
+    print(db.select_all_users())
     await state.reset_state(with_data=False)
     return data
 
