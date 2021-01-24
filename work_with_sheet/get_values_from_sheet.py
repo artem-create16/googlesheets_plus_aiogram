@@ -6,7 +6,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 def get_sheet_values(diapason):
     credentials_file = "work_with_sheet/creds.json"
     spreadsheet_id = '1NlnA0DQYD9A-SfRK-WtCtxtQmV9EZsoJq98gGNpQWVM'
-    # Авторизуемся и получаем service — экземпляр доступа к API
+
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
         credentials_file,
         ['https://www.googleapis.com/auth/spreadsheets',
@@ -14,7 +14,6 @@ def get_sheet_values(diapason):
     httpAuth = credentials.authorize(httplib2.Http())
     service = apiclient.discovery.build('sheets', 'v4', http=httpAuth)
 
-    # Пример чтения файла
     values = service.spreadsheets().values().get(
         spreadsheetId=spreadsheet_id,
         range=diapason,
@@ -26,4 +25,3 @@ def get_sheet_values(diapason):
         one_string = f"{i[0]} - {i[1]}\n"
         string_with_values += one_string
     return string_with_values
-
