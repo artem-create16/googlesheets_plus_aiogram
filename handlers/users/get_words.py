@@ -6,6 +6,7 @@ from loader import get_sheet_values
 
 
 @dp.message_handler(Command('next'))
+@dp.throttled(rate=2)
 async def get_message(message: types.Message):
     value = db.select_user(user_id=message.from_user.id)
     count, start, end = value[1], value[2], value[3]

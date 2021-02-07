@@ -8,19 +8,29 @@ from loader import db
 
 
 @dp.message_handler(Command('settings'))
+@dp.throttled(rate=2)
 async def enter_to_settings(message: types.Message):
     await message.answer('Give me count of words')
-
     await Form.count_words.set()
 
 
-@dp.message_handler(state=Form.count_words)
+@dp.message_handler(lambda message: not message.text.isdigit(), state=Form.count_words)
+async def answer_count_of_words(message: types.Message):
+
+    """
+    If answer is invalid
+    """
+    await message.reply("Its not a digit\nGive me count of words")
+    return
+
+
+@dp.message_handler(lambda message: message.text.isdigit(), state=Form.count_words)
 async def answer_count_of_words(message: types.Message,
                                 state: FSMContext):
     count_words = message.text
     await state.update_data(count=count_words)
 
-    await message.answer('Nice! Now give me time')
+    await message.answer('Nice! Now give me time in format hours-minutes')
     await Form.next()
 
 

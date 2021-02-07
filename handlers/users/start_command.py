@@ -7,6 +7,7 @@ from loader import dp, db
 
 
 @dp.message_handler(Command('start'))
+@dp.throttled(rate=2)
 async def start(message: types.Message):
     try:
         db.add_user(user_id=message.from_user.id,)
