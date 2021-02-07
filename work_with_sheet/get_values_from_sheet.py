@@ -21,7 +21,7 @@ def get_sheet_values(diapason):
     ).execute()
     main_values = values['values']
     string_with_values = ''
-    for i in main_values:
-        one_string = f"{i[0]} - {i[1]}\n"
+    for num, value in enumerate(main_values):
+        one_string = f"{num+1}. {value[0]} - {value[1]}\n"
         string_with_values += one_string
     return string_with_values

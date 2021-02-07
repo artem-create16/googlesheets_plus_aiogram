@@ -51,17 +51,39 @@ class Database:
         sql = """SELECT * FROM Users"""
         return self.execute(sql, fetchall=True)
 
-    def update_settings(self, start_point, count_of_words, end_point, user_id):
+    def update_settings(self, start_point, count_of_words, end_point, time,  user_id):
         sql = """
-        UPDATE Users SET start_point=$0, count_of_words=$1, end_point=$2 WHERE user_id=$3
+        UPDATE Users SET start_point=$0, count_of_words=$1, end_point=$2, time=$3 WHERE user_id=$4
         """
 
-        self.execute(sql, parameters=(start_point, count_of_words, end_point, user_id), commit=True)
+        self.execute(sql, parameters=(start_point, count_of_words, end_point, time,  user_id), commit=True)
 
-    def select_current_settings(self, user_id):
+    def get_count_for_next_command(self, user_id):
         sql = """
-        SELECT start_point AND count_of_words FROM Users WHERE user_id=$1
+        SELECT count_of_words FROM Users WHERE user_id=$1
         """
+        return self.execute(sql, parameters=(user_id, ), fetchone=True)
+
+    def get_start_for_next_command(self, user_id):
+        sql = """
+        SELECT start_point FROM Users WHERE user_id=$1
+        """
+        return self.execute(sql, parameters=(user_id, ), fetchone=True)
+
+    def get_end_for_next_command(self, user_id):
+        sql = """
+        SELECT end_point FROM Users WHERE user_id=$1
+        """
+        return self.execute(sql, parameters=(user_id, ), fetchone=True)
+
+    def update_value_for_next_command(self, start_point, end_point, user_id):
+        sql = """
+        UPDATE Users SET start_point=$0, end_point=$1 WHERE user_id=$2
+        """
+        self.execute(sql, parameters=(start_point, end_point, user_id), commit=True)
+
+    def select_user(self, user_id):
+        sql = """SELECT * FROM Users WHERE user_id=$0"""
         return self.execute(sql, parameters=(user_id, ), fetchone=True)
 
     def delete_all_users(self):

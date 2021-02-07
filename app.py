@@ -8,8 +8,6 @@ async def on_startup(dp):
         print(db.select_all_users())
     except Exception as err:
         pass
-        # print(err, 'sssssssss')
-        # print(db.select_all_users())
 
 if __name__ == '__main__':
     from aiogram import executor
