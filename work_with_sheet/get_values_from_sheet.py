@@ -1,11 +1,13 @@
-import httplib2
 import apiclient.discovery
+import httplib2
 from oauth2client.service_account import ServiceAccountCredentials
+
+from data import config
 
 
 def get_sheet_values(diapason):
     credentials_file = "work_with_sheet/creds.json"
-    spreadsheet_id = '1NlnA0DQYD9A-SfRK-WtCtxtQmV9EZsoJq98gGNpQWVM'
+    spreadsheet_id = config.SPREADSHEET_ID
 
     credentials = ServiceAccountCredentials.from_json_keyfile_name(
         credentials_file,
@@ -19,9 +21,13 @@ def get_sheet_values(diapason):
         range=diapason,
         majorDimension='ROWS'
     ).execute()
-    main_values = values['values']
-    string_with_values = ''
-    for num, value in enumerate(main_values):
-        one_string = f"{num+1}. {value[0]} - {value[1]}\n"
-        string_with_values += one_string
-    return string_with_values
+    try:
+        main_values = values['values']
+        string_with_values = ''
+        for num, value in enumerate(main_values):
+            one_string = f"{num + 1}. {value[0]} - {value[1]}\n"
+            string_with_values += one_string
+        return string_with_values
+
+    except KeyError:
+        return 'That is all'
