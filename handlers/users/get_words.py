@@ -15,9 +15,5 @@ async def get_message(message):
     db.update_value_for_next_command(start_point=start+count,
                                      end_point=end+count,
                                      user_id=message.from_user.id)
-
-    print(db.select_all_users())
-#
-# @dp.callback_query_handler(callback.filter(button_name='next_command'))
-# async def get_message(message: types.Message):
-#     await message.answer(text='+')
+    #
+    # print(db.select_all_users())
