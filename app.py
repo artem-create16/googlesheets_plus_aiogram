@@ -5,7 +5,6 @@ async def on_startup(dp):
     # db.delete_all_users()
     try:
         db.create_table()
-        print(db.select_all_users())
     except Exception as err:
         pass
 
